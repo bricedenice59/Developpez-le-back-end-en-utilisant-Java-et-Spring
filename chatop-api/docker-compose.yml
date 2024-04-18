@@ -9,11 +9,9 @@ services:
       - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root-pass
-      MYSQL_PASSWORD_FILE: /run/secrets/mysql-pass
       MYSQL_USER: dba
       MYSQL_DATABASE: db_chatop
     secrets:
-      - mysql-pass
       - mysql-root-pass
     networks:
       - adminer-network
@@ -35,7 +33,5 @@ networks:
   adminer-network:
 
 secrets:
-  mysql-pass:
-    external: true
   mysql-root-pass:
     external: true

@@ -41,7 +41,7 @@ Because the root password has been randomly generated, we need following command
 +
 [source]
 --
-$ docker ls
+$ docker ps
 --
 
 You should get something like this:
@@ -52,7 +52,7 @@ image::dockerPS.jpeg[]
 +
 [source]
 --
-$ docker exec -it $(docker ps -f name= instanceName -q) cat /run/secrets/mysql-root-pass
+$ docker exec -it $(docker ps -f name=instanceName -q) cat /run/secrets/mysql-root-pass
 --
 
 The actual password value will be displayed as here-below
