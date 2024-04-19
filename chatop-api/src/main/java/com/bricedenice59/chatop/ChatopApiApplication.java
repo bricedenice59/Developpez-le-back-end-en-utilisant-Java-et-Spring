@@ -1,4 +1,4 @@
-package com.bricegrenard.chatop;
+package com.bricedenice59.chatop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,5 +11,4 @@ public class ChatopApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(ChatopApiApplication.class, args);
     }
-
 }

@@ -1,5 +1,12 @@
 server:
   port : 8081
+logging:
+  level:
+    root: ERROR
+    com.bricedenice59.chatop: INFO
+    org.springframework.web: ERROR
+    org.hibernate: ERROR
+    sql: debug
 spring:
   config:
     import: "optional:configtree:/run/secrets/"

@@ -1,9 +1,8 @@
-package com.bricegrenard.chatop.user;
+package com.bricedenice59.chatop.user;
 
-import com.bricegrenard.chatop.role.Role;
+import com.bricedenice59.chatop.role.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,15 +16,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "_user") //user might be already a reserved table name in database
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
