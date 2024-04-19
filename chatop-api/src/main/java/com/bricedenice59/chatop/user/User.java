@@ -2,7 +2,11 @@ package com.bricedenice59.chatop.user;
 
 import com.bricedenice59.chatop.role.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Builder
 @Data
 @Entity
 @Table(name = "_user") //user might be already a reserved table name in database
@@ -30,6 +35,9 @@ public class User implements UserDetails, Principal {
 
     private String password;
 
+    //https://medium.com/@arunkumarmeenakshisundaram/email-id-validation-in-spring-boot-8c0fceebca79
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+            flags = Pattern.Flag.CASE_INSENSITIVE)
     @Column(unique = true)
     private String email;
 
