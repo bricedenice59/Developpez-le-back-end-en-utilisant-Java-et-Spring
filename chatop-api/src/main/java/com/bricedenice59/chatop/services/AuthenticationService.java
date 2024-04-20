@@ -15,12 +15,21 @@ public class AuthenticationService {
         this.userRepository = userRepository;
     }
 
-    public void registerUser(UserRequest userDto) {
+    public void registerUser(UserRequest userRequest) {
         var user = User.builder()
-                .name(userDto.getName())
-                .email(userDto.getEmail())
-                .password(new BCryptPasswordEncoder().encode(userDto.getPassword()))
+                .name(userRequest.getName())
+                .email(userRequest.getEmail())
+                .password(new BCryptPasswordEncoder().encode(userRequest.getPassword()))
                 .build();
         userRepository.save(user);
+    }
+
+    public Boolean loginUser(UserRequest userRequest) {
+        var optionalUser = userRepository.findByEmail(userRequest.getEmail());
+        if (optionalUser.isPresent()) {
+            var user = optionalUser.get();
+            return user.getPassword().equals(new BCryptPasswordEncoder().encode(userRequest.getPassword()));
+        }
+        return false;
     }
 }

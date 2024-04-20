@@ -27,4 +27,14 @@ public class AuthenticationController {
         authenticationService.registerUser(userRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    /**
+     * Post - Register a user
+     */
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> loginUser(@Valid @RequestBody UserRequest userRequest) {
+        var hasSucceeded = authenticationService.loginUser(userRequest);
+        return (hasSucceeded) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
 }
