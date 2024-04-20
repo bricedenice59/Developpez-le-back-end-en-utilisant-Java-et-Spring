@@ -1,11 +1,10 @@
 package com.bricedenice59.chatop.services;
 
+import com.bricedenice59.chatop.exceptions.UserNotFoundException;
 import com.bricedenice59.chatop.user.User;
 import com.bricedenice59.chatop.user.UserRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Data
 @Service
@@ -17,8 +16,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<User> getUserById(Integer id) {
-        return userRepository.findById(id);
+    public User getUserById(Integer id) {
+        var user =  userRepository.findById(id);
+        return user.orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     public User saveUser(User user) {

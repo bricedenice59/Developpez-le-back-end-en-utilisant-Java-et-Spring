@@ -1,5 +1,6 @@
 package com.bricedenice59.chatop.user;
 
+import com.bricedenice59.chatop.model.Rental;
 import com.bricedenice59.chatop.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -53,6 +54,9 @@ public class User implements UserDetails, Principal {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Rental> rentals;
 
     //region UserDetails implementation
 
