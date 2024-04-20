@@ -31,14 +31,16 @@ public class User implements UserDetails, Principal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, length = 255)
     private String name;
 
+    @Column(nullable = false, length = 255)
     private String password;
 
     //https://medium.com/@arunkumarmeenakshisundaram/email-id-validation-in-spring-boot-8c0fceebca79
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE)
-    @Column(unique = true)
+    @Column(unique = true, length = 255)
     private String email;
 
     @CreatedDate
@@ -64,12 +66,12 @@ public class User implements UserDetails, Principal {
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return name;
     }
 
     @Override
