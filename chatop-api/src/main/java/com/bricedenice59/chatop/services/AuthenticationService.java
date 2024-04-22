@@ -1,6 +1,6 @@
 package com.bricedenice59.chatop.services;
 
-import com.bricedenice59.chatop.models.UserRequest;
+import com.bricedenice59.chatop.models.requests.UserRequest;
 import com.bricedenice59.chatop.models.User;
 import com.bricedenice59.chatop.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

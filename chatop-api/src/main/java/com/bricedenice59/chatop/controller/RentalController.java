@@ -4,7 +4,7 @@ package com.bricedenice59.chatop.controller;
 import com.bricedenice59.chatop.exceptions.RentalChangeOwnerForbiddenException;
 import com.bricedenice59.chatop.models.Rental;
 import com.bricedenice59.chatop.models.RentalOutputMessage;
-import com.bricedenice59.chatop.models.RentalRequest;
+import com.bricedenice59.chatop.models.requests.RentalRequest;
 import com.bricedenice59.chatop.services.RentalService;
 import com.bricedenice59.chatop.services.UserService;
 import jakarta.validation.Valid;

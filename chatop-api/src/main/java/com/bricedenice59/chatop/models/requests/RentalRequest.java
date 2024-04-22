@@ -1,4 +1,4 @@
-package com.bricedenice59.chatop.models;
+package com.bricedenice59.chatop.models.requests;
 
 import lombok.Builder;
 import lombok.Data;
