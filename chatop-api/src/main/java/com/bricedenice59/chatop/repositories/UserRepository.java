@@ -1,5 +1,6 @@
-package com.bricedenice59.chatop.user;
+package com.bricedenice59.chatop.repositories;
 
+import com.bricedenice59.chatop.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,5 @@
-package com.bricedenice59.chatop.user;
+package com.bricedenice59.chatop.models;
 
-import com.bricedenice59.chatop.model.Rental;
-import com.bricedenice59.chatop.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;

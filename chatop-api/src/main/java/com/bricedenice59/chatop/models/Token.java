@@ -1,4 +1,4 @@
-package com.bricedenice59.chatop.user;
+package com.bricedenice59.chatop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;

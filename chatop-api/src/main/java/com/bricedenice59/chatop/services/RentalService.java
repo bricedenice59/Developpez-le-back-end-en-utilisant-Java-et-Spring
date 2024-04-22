@@ -1,7 +1,7 @@
 package com.bricedenice59.chatop.services;
 
 import com.bricedenice59.chatop.exceptions.RentalNotFoundException;
-import com.bricedenice59.chatop.model.Rental;
+import com.bricedenice59.chatop.models.Rental;
 import com.bricedenice59.chatop.repositories.RentalRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
 package com.bricedenice59.chatop.controller;
 
 
-import com.bricedenice59.chatop.model.UserRequest;
+import com.bricedenice59.chatop.models.UserRequest;
 import com.bricedenice59.chatop.services.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

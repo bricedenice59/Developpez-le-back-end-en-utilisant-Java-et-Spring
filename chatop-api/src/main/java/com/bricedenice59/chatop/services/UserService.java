@@ -1,8 +1,8 @@
 package com.bricedenice59.chatop.services;
 
 import com.bricedenice59.chatop.exceptions.UserNotFoundException;
-import com.bricedenice59.chatop.user.User;
-import com.bricedenice59.chatop.user.UserRepository;
+import com.bricedenice59.chatop.models.User;
+import com.bricedenice59.chatop.repositories.UserRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 

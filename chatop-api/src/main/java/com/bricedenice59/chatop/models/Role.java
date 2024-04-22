@@ -1,51 +1,36 @@
-package com.bricedenice59.chatop.model;
+package com.bricedenice59.chatop.models;
 
-import com.bricedenice59.chatop.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity
-@Table(name = "rentals")
 @EntityListeners(AuditingEntityListener.class)
-public class Rental {
+public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    private Double surface;
-
-    private Double price;
-
-    @Column(nullable = false, length = 1000)
-    private String picture;
-
-    @Column(length = 2000)
-    private String description;
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore //I don't need this attribute to be part of the response
+    private List<User> users;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(insertable = false)
+    @Column(insertable = false) // I don't want to initialize this attribute when creating a new User
     private LocalDateTime updatedAt;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User Owner;
 }
