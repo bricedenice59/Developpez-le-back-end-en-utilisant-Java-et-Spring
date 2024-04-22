@@ -27,7 +27,8 @@ public class SecurityConfig {
                         req.requestMatchers(
                                 "/auth/**",
                                 "/rentals/**",
-                                "/messages/**"
+                                "/messages/**",
+                                "/user/**"
                         ).permitAll()
                                 .anyRequest()
                                 .authenticated()
