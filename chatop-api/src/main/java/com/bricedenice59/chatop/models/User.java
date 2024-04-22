@@ -56,6 +56,9 @@ public class User implements UserDetails, Principal {
     @OneToMany(fetch = FetchType.LAZY)
     private List<Rental> rentals;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Message> messages;
+
     //region UserDetails implementation
 
     @Override

@@ -3,7 +3,7 @@ package com.bricedenice59.chatop.controller;
 
 import com.bricedenice59.chatop.exceptions.RentalChangeOwnerForbiddenException;
 import com.bricedenice59.chatop.models.Rental;
-import com.bricedenice59.chatop.models.RentalOutputMessage;
+import com.bricedenice59.chatop.models.ApiActionSuccessOutputMessage;
 import com.bricedenice59.chatop.models.requests.RentalRequest;
 import com.bricedenice59.chatop.services.RentalService;
 import com.bricedenice59.chatop.services.UserService;
@@ -71,7 +71,7 @@ public class RentalController {
                 .Owner(user)
                 .build();
         rentalService.saveOrUpdateRental(rental);
-        return new ResponseEntity<>(new RentalOutputMessage("Rental created !"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiActionSuccessOutputMessage("Rental created !"), HttpStatus.CREATED);
     }
 
     /**
@@ -100,6 +100,6 @@ public class RentalController {
         }
 
         rentalService.saveOrUpdateRental(rental);
-        return new ResponseEntity<>(new RentalOutputMessage("Rental updated !"), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiActionSuccessOutputMessage("Rental updated !"), HttpStatus.OK);
     }
 }

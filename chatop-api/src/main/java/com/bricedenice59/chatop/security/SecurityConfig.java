@@ -26,7 +26,8 @@ public class SecurityConfig {
                 .authorizeRequests(req->
                         req.requestMatchers(
                                 "/auth/**",
-                                "/rentals/**"
+                                "/rentals/**",
+                                "/messages/**"
                         ).permitAll()
                                 .anyRequest()
                                 .authenticated()

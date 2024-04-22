@@ -3,10 +3,10 @@ package com.bricedenice59.chatop.models;
 import lombok.Data;
 
 @Data
-public class RentalOutputMessage {
+public class ApiActionSuccessOutputMessage {
 
     private String Message;
-    public RentalOutputMessage(String message) {
+    public ApiActionSuccessOutputMessage(String message) {
         Message = message;
     }
 }
