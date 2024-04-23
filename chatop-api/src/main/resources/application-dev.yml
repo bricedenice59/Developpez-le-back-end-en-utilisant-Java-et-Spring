@@ -1,12 +1,5 @@
 server:
   port : 8081
-logging:
-  level:
-    root: ERROR
-    com.bricedenice59.chatop: INFO
-    org.springframework.web: ERROR
-    org.hibernate: ERROR
-    sql: debug
 spring:
   config:
     import: "optional:configtree:/run/secrets/"
@@ -24,3 +17,8 @@ spring:
         format_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
+application:
+  security:
+    jwt:
+      secret-key:
+      expiration: 8640000
