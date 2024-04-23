@@ -1,17 +1,13 @@
 package com.bricedenice59.chatop.controller;
 
 
-import com.bricedenice59.chatop.exceptions.RentalChangeOwnerForbiddenException;
 import com.bricedenice59.chatop.models.Message;
-import com.bricedenice59.chatop.models.Rental;
-import com.bricedenice59.chatop.models.ApiActionSuccessOutputMessage;
 import com.bricedenice59.chatop.models.requests.MessageRequest;
-import com.bricedenice59.chatop.models.requests.RentalRequest;
+import com.bricedenice59.chatop.models.responses.SimpleOutputMessageResponse;
 import com.bricedenice59.chatop.services.MessageService;
 import com.bricedenice59.chatop.services.RentalService;
 import com.bricedenice59.chatop.services.UserService;
 import jakarta.validation.Valid;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +43,6 @@ public class MessageController {
                 .rental(rental)
                 .build();
         messageService.save(message);
-        return new ResponseEntity<>(new ApiActionSuccessOutputMessage("Message sent with success !"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SimpleOutputMessageResponse("Message sent with success !"), HttpStatus.CREATED);
     }
 }

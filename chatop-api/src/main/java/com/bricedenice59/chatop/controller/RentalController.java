@@ -3,8 +3,9 @@ package com.bricedenice59.chatop.controller;
 
 import com.bricedenice59.chatop.exceptions.RentalChangeOwnerForbiddenException;
 import com.bricedenice59.chatop.models.Rental;
-import com.bricedenice59.chatop.models.ApiActionSuccessOutputMessage;
 import com.bricedenice59.chatop.models.requests.RentalRequest;
+import com.bricedenice59.chatop.models.responses.RentalResponse;
+import com.bricedenice59.chatop.models.responses.SimpleOutputMessageResponse;
 import com.bricedenice59.chatop.services.RentalService;
 import com.bricedenice59.chatop.services.UserService;
 import jakarta.validation.Valid;
@@ -41,9 +42,9 @@ public class RentalController {
      * Get a rental advertisement by id
      */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getRentalById(@PathVariable("id") final Integer id) {
+    public ResponseEntity<RentalResponse> getRentalById(@PathVariable("id") final Integer id) {
         var rental = rentalService.getRental(id);
-        var rentalDto = RentalRequest.builder()
+        var rentalresponse = RentalResponse.builder()
                 .name(rental.getName())
                 .surface(rental.getSurface())
                 .price(rental.getPrice())
@@ -53,7 +54,7 @@ public class RentalController {
                 .createdAt(rental.getCreatedAt())
                 .updatedAt(rental.getUpdatedAt())
                 .build();
-        return new ResponseEntity<>(rentalDto, HttpStatus.OK);
+        return new ResponseEntity<>(rentalresponse, HttpStatus.OK);
     }
 
     /**
@@ -71,7 +72,7 @@ public class RentalController {
                 .Owner(user)
                 .build();
         rentalService.saveOrUpdateRental(rental);
-        return new ResponseEntity<>(new ApiActionSuccessOutputMessage("Rental created !"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SimpleOutputMessageResponse("Rental created !"), HttpStatus.CREATED);
     }
 
     /**
@@ -100,6 +101,6 @@ public class RentalController {
         }
 
         rentalService.saveOrUpdateRental(rental);
-        return new ResponseEntity<>(new ApiActionSuccessOutputMessage("Rental updated !"), HttpStatus.OK);
+        return new ResponseEntity<>(new SimpleOutputMessageResponse("Rental updated !"), HttpStatus.OK);
     }
 }

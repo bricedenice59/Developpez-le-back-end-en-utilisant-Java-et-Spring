@@ -1,4 +1,4 @@
-package com.bricedenice59.chatop.models.response;
+package com.bricedenice59.chatop.models.responses;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,22 +1,14 @@
 package com.bricedenice59.chatop.controller;
 
 
-import com.bricedenice59.chatop.exceptions.RentalChangeOwnerForbiddenException;
-import com.bricedenice59.chatop.models.ApiActionSuccessOutputMessage;
-import com.bricedenice59.chatop.models.Rental;
-import com.bricedenice59.chatop.models.requests.RentalRequest;
-import com.bricedenice59.chatop.models.response.UserResponse;
-import com.bricedenice59.chatop.services.RentalService;
+import com.bricedenice59.chatop.models.responses.UserResponse;
 import com.bricedenice59.chatop.services.UserService;
-import jakarta.validation.Valid;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Locale;
 
 @RestController
@@ -33,7 +25,7 @@ public class UserController {
      * Get a user details by id
      */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getUserDetails(@PathVariable("id") final Integer id) {
+    public ResponseEntity<UserResponse> getUserDetails(@PathVariable("id") final Integer id) {
         var user = userService.getUserById(id);
 
         // Create a custom formatter with the desired pattern
