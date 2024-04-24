@@ -1,0 +1,142 @@
+@Chatop-Api_HostAddress = http://127.0.0.1:8081/api
+
+< {%
+    client.global.clearAll()
+    client.global.set("email", "bricedenice59@fake.com");
+    client.global.set("password", "Pa$$w0rd!!");
+%}
+
+# Register account with an empty email
+POST {{Chatop-Api_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+	"name": "bricedenice59",
+	"email": "",
+	"password": "{{password}}"
+}
+> {%
+    client.test("Register account with an empty email should fail", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+        client.assert(response.body.hasOwnProperty("errorCode"));
+        client.assert(response.body.errorCode === response.status, "ErrorCode status should be the same as the response status");
+        client.assert(response.body.hasOwnProperty("errorMessage"));
+        client.assert(response.body.errorMessage.toString().startsWith("Email is required!"));
+    });
+%}
+###
+
+# Register account with a malformed email
+POST {{Chatop-Api_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+	"name": "bricedenice59",
+	"email": "bricedenice59@host.",
+	"password": "{{password}}"
+}
+> {%
+    client.test("Register account with a malformed email should fail", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+        client.assert(response.body.hasOwnProperty("errorCode"));
+        client.assert(response.body.errorCode === response.status, "ErrorCode status should be the same as the response status");
+        client.assert(response.body.hasOwnProperty("errorMessage"));
+        client.assert(response.body.errorMessage.toString().includes("must be a well-formed email address"));
+    });
+%}
+###
+
+# Register account with an empty password
+POST {{Chatop-Api_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+	"name": "bricedenice59",
+	"email": "bricedenice59@host.com",
+	"password": ""
+}
+> {%
+    client.test("Register account with an empty password should fail", function () {
+        client.assert(response.status === 400, "Response status is not 400");
+        client.assert(response.body.hasOwnProperty("errorCode"));
+        client.assert(response.body.errorCode === response.status, "ErrorCode status should be the same as the response status");
+        client.assert(response.body.hasOwnProperty("errorMessage"));
+        client.assert(response.body.errorMessage.toString().startsWith("Password is required!"));
+    });
+%}
+###
+
+# Register account with a correct email/password tuple
+POST {{Chatop-Api_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+	"name": "bricedenice59",
+	"email": "{{email}}",
+	"password": "{{password}}"
+}
+> {%
+    client.test("Register account with a correct email/password tuple", function () {
+        client.assert(response.status === 201, "Response status is not 201(created)");
+    });
+%}
+
+###
+
+# Register account with the previous same email/password tuple
+POST {{Chatop-Api_HostAddress}}/auth/register
+Content-Type: application/json
+
+{
+	"name": "bricedenice59",
+	"email": "{{email}}",
+	"password": "{{password}}"
+}
+> {%
+    client.test("Register a duplicated account should fail and be handled as general exception", function () {
+        client.assert(response.status === 500, "Response status is not 500");
+        client.assert(response.body.hasOwnProperty("errorMessage"));
+        client.assert(response.body.errorCode != undefined, "errorMessage is empty")
+    });
+%}
+
+###
+
+# Login with no existing email/password entry
+POST {{Chatop-Api_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+	"email": "blablabla@host.com",
+	"password": "qwerty"
+}
+> {%
+    client.test("Request failed because of bad credentials ", function () {
+        client.assert(response.status === 500, "Response status is not 500");
+        client.assert(response.body.hasOwnProperty("errorMessage"));
+        client.assert(response.body.errorMessage.toString().startsWith("Bad credentials"));
+    });
+%}
+
+###
+
+# Login with previously registered account
+POST {{Chatop-Api_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+    client.test("Request returned jwt token", function () {
+        client.assert(response.body.hasOwnProperty("token"), "Cannot find 'token' property in response");
+        client.assert(response.body.token != undefined, "jwt authentication token is empty")
+    });
+    client.global.set("token", response.body.token);
+%}
+
+###
