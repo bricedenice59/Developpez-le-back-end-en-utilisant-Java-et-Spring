@@ -1,7 +1,10 @@
 package com.bricedenice59.chatop.models.responses;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 public class ApiErrorResponse {
@@ -15,6 +18,12 @@ public class ApiErrorResponse {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
         this.stackTrace = stackTrace;
+        this.timestamp = timestamp;
+    }
+
+    public ApiErrorResponse(Integer errorCode, Set<String> errorMessages, LocalDateTime timestamp) {
+        this.errorCode = errorCode;
+        this.errorMessage = StringUtils.join(errorMessages, ",");
         this.timestamp = timestamp;
     }
 }

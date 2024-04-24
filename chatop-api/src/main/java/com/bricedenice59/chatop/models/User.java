@@ -1,8 +1,6 @@
 package com.bricedenice59.chatop.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -36,9 +34,6 @@ public class User implements UserDetails, Principal {
     @Column(nullable = false, length = 255)
     private String password;
 
-    //https://medium.com/@arunkumarmeenakshisundaram/email-id-validation-in-spring-boot-8c0fceebca79
-    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
-            flags = Pattern.Flag.CASE_INSENSITIVE)
     @Column(unique = true, length = 255)
     private String email;
 

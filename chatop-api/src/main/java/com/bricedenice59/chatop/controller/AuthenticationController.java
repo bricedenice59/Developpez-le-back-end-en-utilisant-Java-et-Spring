@@ -1,7 +1,9 @@
 package com.bricedenice59.chatop.controller;
 
 
-import com.bricedenice59.chatop.models.requests.UserRequest;
+import com.bricedenice59.chatop.models.requests.LoginUserRequest;
+import com.bricedenice59.chatop.models.requests.RegisterUserRequest;
+import com.bricedenice59.chatop.models.responses.AuthenticationResponse;
 import com.bricedenice59.chatop.services.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,18 +25,18 @@ public class AuthenticationController {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRequest userRequest) {
-        authenticationService.registerUser(userRequest);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
+        authenticationService.registerUser(registerUserRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
-     * Post - Register a user
+     * Post - Login a user
      */
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> loginUser(@Valid @RequestBody UserRequest userRequest) {
-        var hasSucceeded = authenticationService.loginUser(userRequest);
-        return (hasSucceeded) ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<AuthenticationResponse> loginUser(@Valid @RequestBody LoginUserRequest loginUserRequest) {
+        var authenticationResponse = authenticationService.loginUser(loginUserRequest);
+        return ResponseEntity.ok(authenticationResponse);
     }
 }
