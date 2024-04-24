@@ -15,7 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("rentals")
@@ -34,8 +35,25 @@ public class RentalController {
      */
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<Rental> getAll() {
-        return rentalService.getRentals();
+    public ResponseEntity<?> getAll() {
+        var rentalsResponse = new HashMap<String, Object>();
+        var rentals = rentalService.getRentals()
+                .stream()
+                .map(
+                    rental -> RentalResponse.builder()
+                            .name(rental.getName())
+                            .surface(rental.getSurface())
+                            .price(rental.getPrice())
+                            .picture(rental.getPicture())
+                            .description(rental.getDescription())
+                            .owner_id(rental.getOwner().getId())
+                            .createdAt(rental.getCreatedAt())
+                            .updatedAt(rental.getUpdatedAt())
+                .build())
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        rentalsResponse.put("rentals", rentals);
+        return new ResponseEntity<>(rentalsResponse, HttpStatus.OK);
     }
 
     /**
