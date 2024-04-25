@@ -31,7 +31,8 @@ public class JwtFilterService extends OncePerRequestFilter {
             throws ServletException, IOException {
 
             //every endpoint of the auth route (login, register...) do not need any filtering
-            if(request.getRequestURI().startsWith("/api/auth")) {
+            if(request.getRequestURI().startsWith("/api/auth/register") ||
+                    request.getRequestURI().startsWith("/api/auth/login")) {
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -58,6 +59,8 @@ public class JwtFilterService extends OncePerRequestFilter {
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    request.setAttribute("currentUser_email", userEmail);
                 }
             }
             filterChain.doFilter(request, response);

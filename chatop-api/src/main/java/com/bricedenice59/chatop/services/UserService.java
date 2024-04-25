@@ -21,6 +21,11 @@ public class UserService {
         return user.orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
+    public User getUserByEmail(String email) {
+        var user =  userRepository.findByEmail(email);
+        return user.orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
     public User saveUser(User user) {
         return userRepository.save(user);
     }

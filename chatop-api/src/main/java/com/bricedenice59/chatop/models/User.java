@@ -71,7 +71,8 @@ public class User implements UserDetails, Principal {
 
     @Override
     public String getUsername() {
-        return name;
+        //email is the property we want to use for JWT token generation/validation
+        return email;
     }
 
     @Override
@@ -99,7 +100,7 @@ public class User implements UserDetails, Principal {
 
     @Override
     public String getName() {
-        return email;
+        return name;
     }
 
     //endregion
