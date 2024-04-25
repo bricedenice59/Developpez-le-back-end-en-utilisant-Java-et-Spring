@@ -32,10 +32,10 @@ public class AuthenticationController {
      * Post - Register a user
      */
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
-        authenticationService.registerUser(registerUserRequest);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<AuthenticationResponse> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
+        var authenticationResponse = authenticationService.registerUser(registerUserRequest);
+        return ResponseEntity.ok(authenticationResponse);
     }
 
     /**
