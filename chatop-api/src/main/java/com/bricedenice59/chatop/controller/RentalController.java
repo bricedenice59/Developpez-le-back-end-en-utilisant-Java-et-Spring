@@ -15,12 +15,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("rentals")
-public class RentalController {
+public class RentalController{
 
     private final RentalService rentalService;
     private final UserService userService;
@@ -41,6 +42,7 @@ public class RentalController {
                 .stream()
                 .map(
                     rental -> RentalResponse.builder()
+                            .id(rental.getId())
                             .name(rental.getName())
                             .surface(rental.getSurface())
                             .price(rental.getPrice())
@@ -78,14 +80,15 @@ public class RentalController {
     /**
      * Post a rental advertisement
      */
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addRental(@Valid @RequestBody RentalRequest rentalRequest) {
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addRental(@Valid @ModelAttribute RentalRequest rentalRequest) throws IOException {
         var user = userService.getUserById(rentalRequest.getOwner_id());
+        var pictureUrl = rentalService.saveFile(rentalRequest.getPicture());
         var rental = Rental.builder()
                 .name(rentalRequest.getName())
                 .surface(rentalRequest.getSurface())
                 .price(rentalRequest.getPrice())
-                .picture(rentalRequest.getPicture())
+                .picture(pictureUrl)
                 .description(rentalRequest.getDescription())
                 .Owner(user)
                 .build();
@@ -96,8 +99,8 @@ public class RentalController {
     /**
      * Update a rental advertisement
      */
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateRental(@PathVariable("id") final Integer id, @Valid @RequestBody RentalRequest rentalRequest) {
+    @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateRental(@PathVariable("id") final Integer id, @Valid @ModelAttribute RentalRequest rentalRequest) throws IOException {
         var rental = rentalService.getRental(id);
         if(rentalRequest.getOwner_id() != null && !rental.getId().equals(rentalRequest.getOwner_id())) {
             throw new RentalChangeOwnerForbiddenException("You are not allowed to change owner of an existing rental");
@@ -105,8 +108,9 @@ public class RentalController {
         if(StringUtils.isNotEmpty(rentalRequest.getName()) && !rental.getName().equals(rentalRequest.getName())) {
             rental.setName(rentalRequest.getName());
         }
-        if(StringUtils.isNotEmpty(rentalRequest.getPicture()) && !rental.getPicture().equals(rentalRequest.getPicture())) {
-            rental.setPicture(rentalRequest.getPicture());
+        if(rentalRequest.getPicture() != null) {
+            var pictureUrl = rentalService.saveFile(rentalRequest.getPicture());
+            rental.setPicture(pictureUrl);
         }
         if(StringUtils.isNotEmpty(rentalRequest.getDescription()) && !rental.getDescription().equals(rentalRequest.getDescription())) {
             rental.setDescription(rentalRequest.getDescription());

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class RentalResponse {
 
+    private Integer id;
     private String name;
     private Double surface;
     private Double price;
