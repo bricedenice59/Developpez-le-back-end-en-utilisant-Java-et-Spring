@@ -32,10 +32,7 @@ public class SecurityConfig {
                 .authorizeRequests(req->
                         req.requestMatchers(
                                 "/auth/register",
-                                "/auth/login",
-                                "/rentals/**",
-                                "/messages/**",
-                                "/user/**"
+                                "/auth/login"
                         ).permitAll()
                                 .anyRequest()
                                 .authenticated()
