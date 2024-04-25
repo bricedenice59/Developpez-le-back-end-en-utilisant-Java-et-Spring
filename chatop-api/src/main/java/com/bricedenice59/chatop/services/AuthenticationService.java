@@ -32,7 +32,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public void registerUser(RegisterUserRequest registerUserRequest) {
+    public AuthenticationResponse registerUser(RegisterUserRequest registerUserRequest) {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalStateException("Role user was not found or not initialized"));
         var user = User.builder()
@@ -41,7 +41,9 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(registerUserRequest.getPassword()))
                 .roles(List.of(userRole))
                 .build();
+
         userRepository.save(user);
+        return getToken(user);
     }
 
     public AuthenticationResponse loginUser(LoginUserRequest loginUserRequest) {
@@ -51,9 +53,13 @@ public class AuthenticationService {
                         loginUserRequest.getPassword()
                 )
         );
+        return getToken((User)authentication.getPrincipal());
+    }
+
+    public AuthenticationResponse getToken(User user) {
         var claims = new HashMap<String, Object>();
-        var user = (User)authentication.getPrincipal();
-        claims.put("email", user.getEmail());
+
+        claims.put("fullName", user.getName());
         var jwtToken = jwtService.generateToken(claims, user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
