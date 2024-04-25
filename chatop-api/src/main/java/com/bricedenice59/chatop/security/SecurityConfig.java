@@ -32,7 +32,8 @@ public class SecurityConfig {
                 .authorizeRequests(req->
                         req.requestMatchers(
                                 "/auth/register",
-                                "/auth/login"
+                                "/auth/login",
+                                "/images/**"
                         ).permitAll()
                                 .anyRequest()
                                 .authenticated()
