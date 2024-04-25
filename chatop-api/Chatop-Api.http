@@ -77,8 +77,14 @@ Content-Type: application/json
 }
 > {%
     client.test("Register account with a correct email/password tuple", function () {
-        client.assert(response.status === 201, "Response status is not 201(created)");
+        client.assert(response.status === 200, "Response status is not 200");
     });
+
+    client.test("Request returned jwt token", function () {
+        client.assert(response.body.hasOwnProperty("token"), "Cannot find 'token' property in response");
+        client.assert(response.body.token != undefined, "jwt authentication token is empty")
+    });
+    client.global.set("token", response.body.token);
 %}
 
 ###
