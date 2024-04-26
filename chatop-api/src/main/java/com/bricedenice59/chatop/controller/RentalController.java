@@ -81,7 +81,7 @@ public class RentalController{
     @PutMapping(value = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateRental(@PathVariable("id") final Integer id, @Valid @ModelAttribute RentalRequest rentalRequest) throws IOException {
         var rental = rentalService.getRental(id);
-        if(rentalRequest.getOwner_id() != null && !rental.getId().equals(rentalRequest.getOwner_id())) {
+        if(rentalRequest.getOwner_id() != null && !rental.getOwner().getId().equals(rentalRequest.getOwner_id())) {
             throw new RentalChangeOwnerForbiddenException("You are not allowed to change owner of an existing rental");
         }
         if(StringUtils.isNotEmpty(rentalRequest.getName()) && !rental.getName().equals(rentalRequest.getName())) {

@@ -58,6 +58,7 @@ public class RentalService {
 
     public RentalResponse buildRentalResponse(Rental rental){
         return RentalResponse.builder()
+                .id(rental.getId())
                 .name(rental.getName())
                 .surface(rental.getSurface())
                 .price(rental.getPrice())
