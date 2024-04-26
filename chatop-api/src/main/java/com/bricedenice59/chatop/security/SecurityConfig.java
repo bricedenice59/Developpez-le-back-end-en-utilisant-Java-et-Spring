@@ -33,6 +33,10 @@ public class SecurityConfig {
                         req.requestMatchers(
                                 "/auth/register",
                                 "/auth/login",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/swagger-ui",
+                                "/swagger-ui/**",
                                 "/images/**"
                         ).permitAll()
                                 .anyRequest()
