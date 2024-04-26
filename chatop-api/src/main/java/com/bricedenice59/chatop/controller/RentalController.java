@@ -40,18 +40,7 @@ public class RentalController{
         var rentalsResponse = new HashMap<String, Object>();
         var rentals = rentalService.getRentals()
                 .stream()
-                .map(
-                    rental -> RentalResponse.builder()
-                            .id(rental.getId())
-                            .name(rental.getName())
-                            .surface(rental.getSurface())
-                            .price(rental.getPrice())
-                            .picture(rental.getPicture())
-                            .description(rental.getDescription())
-                            .owner_id(rental.getOwner().getId())
-                            .createdAt(rental.getCreatedAt())
-                            .updatedAt(rental.getUpdatedAt())
-                .build())
+                .map(rentalService::buildRentalResponse)
                 .collect(Collectors.toCollection(ArrayList::new));
 
         rentalsResponse.put("rentals", rentals);
@@ -64,17 +53,7 @@ public class RentalController{
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RentalResponse> getRentalById(@PathVariable("id") final Integer id) {
         var rental = rentalService.getRental(id);
-        var rentalresponse = RentalResponse.builder()
-                .name(rental.getName())
-                .surface(rental.getSurface())
-                .price(rental.getPrice())
-                .picture(rental.getPicture())
-                .description(rental.getDescription())
-                .owner_id(rental.getOwner().getId())
-                .createdAt(rental.getCreatedAt())
-                .updatedAt(rental.getUpdatedAt())
-                .build();
-        return new ResponseEntity<>(rentalresponse, HttpStatus.OK);
+        return new ResponseEntity<>(rentalService.buildRentalResponse(rental), HttpStatus.OK);
     }
 
     /**

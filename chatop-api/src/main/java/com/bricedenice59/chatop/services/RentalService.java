@@ -2,10 +2,13 @@ package com.bricedenice59.chatop.services;
 
 import com.bricedenice59.chatop.exceptions.RentalNotFoundException;
 import com.bricedenice59.chatop.models.Rental;
+import com.bricedenice59.chatop.models.responses.RentalResponse;
 import com.bricedenice59.chatop.repositories.RentalRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,12 +22,25 @@ import java.util.UUID;
 @Service
 public class RentalService {
 
-    private static String UPLOAD_DIRECTORY = "chatop-api/src/main/resources/static/images/";
+    @Value("${server.port}")
+    private String serverPort;
+    @Value("${server.address}")
+    private String serverHost;
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
+    private static String UPLOAD_DIRECTORY = "chatop-api/src/main/resources/static/images/";
+    private static String IMAGE_SERVER_PATH = "images";
     private final RentalRepository rentalRepository;
+    private String imageServerUrl;
 
     public RentalService(RentalRepository rentalRepository) {
         this.rentalRepository = rentalRepository;
+    }
+
+    @PostConstruct
+    public void init()  {
+        imageServerUrl = "http://" + serverHost + ":" + serverPort + contextPath + "/" + IMAGE_SERVER_PATH + "/";
     }
 
     public Rental getRental(Integer id) {
@@ -38,6 +54,19 @@ public class RentalService {
 
     public Rental saveOrUpdateRental(Rental rental) {
         return rentalRepository.save(rental);
+    }
+
+    public RentalResponse buildRentalResponse(Rental rental){
+        return RentalResponse.builder()
+                .name(rental.getName())
+                .surface(rental.getSurface())
+                .price(rental.getPrice())
+                .picture(imageServerUrl + rental.getPicture())
+                .description(rental.getDescription())
+                .owner_id(rental.getOwner().getId())
+                .createdAt(rental.getCreatedAt())
+                .updatedAt(rental.getUpdatedAt())
+                .build();
     }
 
     //https://medium.com/@kkarththi15/saving-images-locally-in-a-spring-boot-web-application-01405a988bc7
