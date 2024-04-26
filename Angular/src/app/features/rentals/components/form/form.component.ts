@@ -51,7 +51,7 @@ export class FormComponent implements OnInit {
       formData.append('picture', this.rentalForm!.get('picture')?.value._files[0]);
     }
     formData.append('description', this.rentalForm!.get('description')?.value);
-
+    formData.append('owner_id', this.rentalForm!.get('id')?.value);
     if (!this.onUpdate) {
       this.rentalsService
         .create(formData)
@@ -65,11 +65,12 @@ export class FormComponent implements OnInit {
 
   private initForm(rental?: Rental): void {
     console.log(rental);
-    console.log(this.sessionService.user!.id);
+
     if( (rental !== undefined) && (rental?.owner_id !== this.sessionService.user!.id)) {
       this.router.navigate(['/rentals']);
     }
     this.rentalForm = this.fb.group({
+      id: [this.sessionService.user!.id],
       name: [rental ? rental.name : '', [Validators.required]],
       surface: [rental ? rental.surface : '', [Validators.required]],
       price: [rental ? rental.price : '', [Validators.required]],
