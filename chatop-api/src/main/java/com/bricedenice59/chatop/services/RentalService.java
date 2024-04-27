@@ -24,8 +24,7 @@ public class RentalService {
 
     @Value("${server.port}")
     private String serverPort;
-    @Value("${server.address}")
-    private String serverHost;
+    private final String serverHost = "127.0.0.1"; //surely there is a better way to do that!
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
@@ -39,7 +38,7 @@ public class RentalService {
     }
 
     @PostConstruct
-    public void init()  {
+    public void init() {
         imageServerUrl = "http://" + serverHost + ":" + serverPort + contextPath + "/" + IMAGE_SERVER_PATH + "/";
     }
 

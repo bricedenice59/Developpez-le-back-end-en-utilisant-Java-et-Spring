@@ -1,6 +1,6 @@
 server:
   port : 8081
-  address: 127.0.0.1
+
 spring:
   data:
     jpa:
@@ -9,11 +9,10 @@ spring:
   config:
     import: "optional:configtree:/run/secrets/"
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/db_chatop
-    #url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE}
+    #url: jdbc:mysql://127.0.0.1:3306/db_chatop
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE}
     username: root
-    password:
-    #password: ${mysql-root-pass}
+    password: ${mysql-root-pass}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
