@@ -1,4 +1,7 @@
 version: '3.8'
+x-common-variables: &common-variables
+  MYSQL_DATABASE: db_chatop
+
 services:
   mysql_server:
     image: mysql
@@ -10,11 +13,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root-pass
       MYSQL_USER: dba
-      MYSQL_DATABASE: db_chatop
+      <<: *common-variables
     secrets:
       - mysql-root-pass
     networks:
-      - adminer-network
+      - spring-boot-app-network
 
   adminer:
     image: adminer
@@ -25,12 +28,27 @@ services:
     depends_on:
       - mysql_server
     networks:
-      - adminer-network
+      - spring-boot-app-network
+
+  chatop-api:
+    image: springboot-chatop-api:latest
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      MYSQL_HOST: mysql_server
+      MYSQL_PORT: 3306
+      <<: *common-variables
+    secrets:
+      - mysql-root-pass
+    networks:
+      - spring-boot-app-network
+
 volumes:
   mysql-data:
 
 networks:
-  adminer-network:
+  spring-boot-app-network:
 
 secrets:
   mysql-root-pass:
