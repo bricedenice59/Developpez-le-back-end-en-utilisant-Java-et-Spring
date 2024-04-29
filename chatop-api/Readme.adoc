@@ -1,17 +1,27 @@
-# Chatop.API
+= Chatop.API
 
-API endpoints for project number 3 Openclassrooms
+A collection of API endpoints for project number 3 Openclassrooms using Spring Boot framework.
 
-For the database part, I am using docker as a local container, the configuration file "docker-compose.yml" can be found at the root of the chatop-api project.
+== API
 
-* One MySQL instance
+* *Swagger documentation* is available at following endpoint (change host and port accordingly)
+http://localhost:8081/api/swagger-ui/index.html
+
+* Integration tests are available within the file *Chatop-API.http* (requires latest version of IntelliJ IDEA)
+
+* *Postman* json collection file for endpoints testing is available at the root of the project *rental.postman_collection.json*
+
+== Run the API project with docker
+For demo purposes, I will be using *Docker*.
+
+The configuration file *docker-compose.yml* can be found at the root of the chatop-api project. It consists in 3 different services:
+
+* One MySQL instance (an empty database named *db_chatop* that will be created when mysql image will be mounted.)
 * One Adminer instance
-* A database named 'db_chatop'
+* The spring boot API project
 
-I am using docker secrets to manage any sensitive data such as database password which the container needs at runtime but you don't want to store in the image or in source control.
+I am using *docker secrets* to manage any sensitive data such as database password which the container needs at runtime but you don't want to store in the image or in source control.
 https://docs.docker.com/engine/swarm/secrets/
-
-In order to use docker secrets, you need to follow steps:
 
 * Run docker in swarm mode by using
 +
@@ -19,23 +29,36 @@ In order to use docker secrets, you need to follow steps:
 $ docker swarm init
 --
 
-* Create a random password for the root user by using openssl (mysql-root-pass is the secret name defined in docker-compose.yml)
+* Create a random password for the mySQL database root user  (mysql-root-pass is the secret name defined in docker-compose.yml)
 +
 [source]
 $ openssl rand -base64 12 | docker secret create mysql-root-pass -
 --
 
+* Create a random secret for jwt token creation (jwt-secret-pass is the secret name defined in docker-compose.yml)
++
+[source]
+$ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))" | docker secret create jwt-secret-pass -
+--
+
 Deployment time!
 
-* Deploy the stack
+* Startup project Jar file must be created using maven package (mvn package)
+
+* Build the spring boot project Docker image
++
+[source]
+
+$ docker build --no-cache -t springboot-chatop-api:latest .
+--
+
+* Deploy all services with Docker stack
 +
 [source]
 --
 $ docker stack deploy -c docker-compose.yml myStack
 --
-
-Because the root password has been randomly generated, we need following command to view its actual value.
-
+For development purposes, to check for the generated database root password, we need following command to view its actual value.
 
 * We need to get a list of processes running so that we can extract the name of the actual running instance of mySQL
 +

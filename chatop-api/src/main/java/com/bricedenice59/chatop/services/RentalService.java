@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
@@ -24,12 +23,13 @@ public class RentalService {
 
     @Value("${server.port}")
     private String serverPort;
-    private final String serverHost = "127.0.0.1"; //surely there is a better way to do that!
+    private String serverHost = "127.0.0.1"; //surely there is a better way to do that!
+    private final String imagesDirectoryPathname = "images";
+    @Value("${upload.volume}")
+    private String UPLOAD_VOLUME_PATH;
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-    private static String UPLOAD_DIRECTORY = "chatop-api/src/main/resources/static/images/";
-    private static String IMAGE_SERVER_PATH = "images";
     private final RentalRepository rentalRepository;
     private String imageServerUrl;
 
@@ -39,7 +39,7 @@ public class RentalService {
 
     @PostConstruct
     public void init() {
-        imageServerUrl = "http://" + serverHost + ":" + serverPort + contextPath + "/" + IMAGE_SERVER_PATH + "/";
+        imageServerUrl = "http://" + serverHost + ":" + serverPort + contextPath + "/" + imagesDirectoryPathname + "/";
     }
 
     public Rental getRental(Integer id) {
@@ -73,7 +73,7 @@ public class RentalService {
     public String saveFile(MultipartFile imageFile) throws IOException {
         String uniqueFileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
 
-        Path uploadPath = Paths.get(System.getProperty("user.dir")).resolve(Path.of(UPLOAD_DIRECTORY));
+        Path uploadPath = Path.of(UPLOAD_VOLUME_PATH);
         Path filePath = uploadPath.resolve(uniqueFileName);
 
         if (!Files.exists(uploadPath)) {

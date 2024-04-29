@@ -1,21 +1,23 @@
 upload:
-  volume: /chatop-api/src/main/resources/static/images/
+  volume: ${UPLOAD_VOLUME_PATH}
 
 server:
-  port : 8082
+  port : 8081
 
 spring:
   web:
     resources:
-      static-locations: 'file:/chatop-api/src/main/resources/static/images/'
+      static-locations: 'file:${UPLOAD_VOLUME_PATH}'
   data:
     jpa:
       repositories:
         bootstrap-mode: lazy
+  config:
+    import: "optional:configtree:/run/secrets/"
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/db_chatop
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE}
     username: root
-    password:
+    password: ${mysql-root-pass}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -29,5 +31,5 @@ spring:
 application:
   security:
     jwt:
-      secret-key:
+      secret-key: ${jwt-secret-pass}
       expiration: 8640000

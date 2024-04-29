@@ -39,7 +39,10 @@ services:
       JWT_SECRET_FILE: /run/secrets/jwt-secret-pass
       MYSQL_HOST: mysql_server
       MYSQL_PORT: 3306
+      UPLOAD_VOLUME_PATH: /opt/files/images/
       <<: *common-variables
+    volumes:
+      - /Users/Shared/spring-boot-project3:/opt/files/images
     secrets:
       - mysql-root-pass
       - jwt-secret-pass
