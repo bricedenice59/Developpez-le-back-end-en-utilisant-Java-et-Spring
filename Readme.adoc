@@ -69,7 +69,7 @@ $ docker ps
 
 You should get something like this:
 
-image::/resources/dockerPS.jpeg[]
+image::chatop-api/resources/dockerPS.jpeg[]
 
 * Finally we can extract the password via the following command (replace with the name of the running instance of mySQL as shown as here-above picture)
 +
@@ -80,7 +80,7 @@ $ docker exec -it $(docker ps -f name=instanceName -q) cat /run/secrets/mysql-ro
 
 The actual password value will be displayed as here-below
 
-image::/resources/extractDockerDbRootPwd.jpeg[]
+image::chatop-api//resources/extractDockerDbRootPwd.jpeg[]
 
 You can now connect to the MySQL instance by connecting to the web interface of adminer running on http://127.0.0.1:8080  as root user (that is bad practice in production!).
 
