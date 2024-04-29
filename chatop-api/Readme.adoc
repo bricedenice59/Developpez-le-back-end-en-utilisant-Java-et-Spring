@@ -7,9 +7,9 @@ A collection of API endpoints for project number 3 Openclassrooms using Spring B
 * *Swagger documentation* is available at following endpoint (change host and port accordingly)
 http://localhost:8081/api/swagger-ui/index.html
 
-* Integration tests are available within the file *Chatop-API.http* (requires latest version of IntelliJ IDEA)
+* Integration tests are available in */resources/Chatop-API.http* (requires latest version of IntelliJ IDEA)
 
-* *Postman* json collection file for endpoints testing is available at the root of the project *rental.postman_collection.json*
+* *Postman* json collection file for endpoints testing is available in *resources/rental.postman_collection.json*
 
 == Run the API project with docker
 For demo purposes, I will be using *Docker*.
@@ -69,7 +69,7 @@ $ docker ps
 
 You should get something like this:
 
-image::dockerPS.jpeg[]
+image::/resources/dockerPS.jpeg[]
 
 * Finally we can extract the password via the following command (replace with the name of the running instance of mySQL as shown as here-above picture)
 +
@@ -80,6 +80,6 @@ $ docker exec -it $(docker ps -f name=instanceName -q) cat /run/secrets/mysql-ro
 
 The actual password value will be displayed as here-below
 
-image::extractDockerDbRootPwd.jpeg[]
+image::/resources/extractDockerDbRootPwd.jpeg[]
 
 You can now connect to the MySQL instance by connecting to the web interface of adminer running on http://127.0.0.1:8080  as root user (that is bad practice in production!).
