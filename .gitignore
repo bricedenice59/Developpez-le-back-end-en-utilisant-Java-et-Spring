@@ -43,3 +43,5 @@ Thumbs.db
 
 # Yarn
 /.yarn/
+#secret env file
+/chatop-api/src/main/resources/secrets.properties
